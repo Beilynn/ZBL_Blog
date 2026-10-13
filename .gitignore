@@ -17,3 +17,10 @@ Thumbs.db
 # 日志
 *.log
 npm-debug.log*
+
+# 部署教程资料（不上传）
+README_en.md
+UpdateLog.md
+update.bat
+update.py
+picture/
