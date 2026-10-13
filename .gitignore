@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+
+# Next.js 构建产物
+.next/
+out/
+
+# 缓存
+*.tsbuildinfo
+next-env.d.ts
+
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+.idea/
+
+# 日志
+*.log
+npm-debug.log*
