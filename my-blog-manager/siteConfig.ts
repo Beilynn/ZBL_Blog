@@ -2,20 +2,20 @@
 
 export const siteConfig = {
   // 1. 网站标题与博主信息
-  title: "XingHuiSama の 宝藏之地",
-  faviconUrl: "https://bu.dusays.com/2026/03/24/69c1e38ac1846.jpg",
-  authorName: "XingHuiSama",
+  title: "Beilynn's Blog",
+  faviconUrl: "https://pic.82314912.xyz/api/cfile/AgACAgEAAyEGAATEcCnBAAKNHWrOT2UhjYEHkJ7dJ3LoWdNjbvLLAAJiDWsbEIZxRtnG4jH5iIo8AQADAgADeQADPQQ\n",
+  authorName: "Beilynn",
   bio: "在代码、学术与分子动力学模拟间穿梭的普通人。近期正埋头于 GROMACS 模拟研究与神经网络计算。",
 
-  navTitle: "XingHuiSama",
+  navTitle: "Beilynn",
 
   // 👇 【新增】导航栏中间的那个后缀/分隔符（默认是 の）
-  navSuffix: "の",
+  navSuffix: "'s",
 
-  navAfter: "宝藏之地",
+  navAfter: "Blog",
 
   // 2. 头像设置 (支持网络链接，或将图片放入 public 文件夹后使用 "/me.jpg")
-  avatarUrl: "https://bu.dusays.com/2026/03/24/69c1e38ac1846.jpg",
+  avatarUrl: "https://pic.82314912.xyz/api/cfile/AgACAgEAAyEGAATEcCnBAAKNHWrOT2UhjYEHkJ7dJ3LoWdNjbvLLAAJiDWsbEIZxRtnG4jH5iIo8AQADAgADeQADPQQ",
 
   // 3. 网站背景设置 (二选一)
   // 如果想用纯图片背景，请在下面 bgImage 写路径，并将 useGradient 设为 false
@@ -33,9 +33,9 @@ export const siteConfig = {
   social: {
     github: "https://github.com/heiehiehi",
     gitee: "https://github.com/heiehiehi",
-    google: "mailto:bilibiliwuwuwu@gmail.com",
-    email: "1124533793@qq.com",
-    qq: "1124533793",
+    google: "zhengbeilin17@gmail.com",
+    email: "2642983645@qq.com",
+    qq: "2642983645",
     wechat: "XingHuisama",
   },
   counts: {
