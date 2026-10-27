@@ -18,6 +18,7 @@ export default function Timeline() {
   let posts: any[] = [];
   let categoryCounts: Record<string, number> = {};
 
+  // 1) 本地 markdown 文章：仅当 posts 目录存在时读取，目录缺失不影响外链条目
   try {
     if (fs.existsSync(postsDirectory)) {
       const fileNames = fs.readdirSync(postsDirectory).filter(f => f.endsWith('.md'));
@@ -44,35 +45,36 @@ export default function Timeline() {
           cover: data.cover || siteConfig.defaultPostCover,
         });
       });
-
-      // 外链作品节点（在线简历、AI 科普站）：作为时间轴条目收录
-      const now = new Date();
-      const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-      featuredLinks.forEach((f) => {
-        categoryCounts[f.category] = (categoryCounts[f.category] || 0) + 1;
-        posts.push({
-          slug: `ext-${f.id}`,
-          title: f.name,
-          date: today,
-          description: f.description,
-          tags: f.tags,
-          category: f.category,
-          cover: f.coverImage || '',
-          external: true,
-          url: f.url,
-          icon: f.icon,
-          kind: f.kind,
-        });
-      });
-
-      posts.sort((a, b) => {
-        const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
-        return dateDiff !== 0 ? dateDiff : b.slug.localeCompare(a.slug);
-      });
     }
-  } catch(e) {
+  } catch (e) {
     console.error("读取文章列表失败", e);
   }
+
+  // 2) 外链作品节点（在线简历、AI 科普站）：无条件收录，不依赖 posts 目录是否存在
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  featuredLinks.forEach((f) => {
+    categoryCounts[f.category] = (categoryCounts[f.category] || 0) + 1;
+    posts.push({
+      slug: `ext-${f.id}`,
+      title: f.name,
+      date: today,
+      description: f.description,
+      tags: f.tags,
+      category: f.category,
+      cover: f.coverImage || '',
+      external: true,
+      url: f.url,
+      icon: f.icon,
+      kind: f.kind,
+    });
+  });
+
+  // 3) 统一按日期倒序排列
+  posts.sort((a, b) => {
+    const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+    return dateDiff !== 0 ? dateDiff : b.slug.localeCompare(a.slug);
+  });
 
   const categoriesArray = Object.keys(categoryCounts)
     .map(name => ({ name, count: categoryCounts[name] }))
