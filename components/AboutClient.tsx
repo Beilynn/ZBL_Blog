@@ -116,8 +116,8 @@ export default function AboutClient({
 
   const getTypeColor = (type: string) => {
     switch(type) {
-      case '文章': return 'text-indigo-600 dark:text-indigo-400';
-      case '杂谈': return 'text-purple-600 dark:text-purple-400';
+      case '文章': return 'text-orange-600 dark:text-orange-400';
+      case '杂谈': return 'text-amber-600 dark:text-amber-400';
       case '说说': return 'text-pink-600 dark:text-pink-400';
       default: return 'text-slate-500 dark:text-slate-400';
     }
@@ -126,9 +126,18 @@ export default function AboutClient({
   return (
     <div className="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-[40px] shadow-2xl border border-white/40 dark:border-white/10 overflow-hidden transition-colors duration-700 relative">
 
-      <div className="w-full h-40 sm:h-48 md:h-64 relative bg-slate-200 dark:bg-slate-700 overflow-hidden group">
-        <img src={coverImage} alt="About Hero" className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+      <div className="w-full h-40 sm:h-48 md:h-72 relative bg-[#f5ebe0] overflow-hidden group">
+        <img
+          src={coverImage}
+          alt="About Hero"
+          className="w-full h-full object-cover opacity-100 transition-transform duration-1000 group-hover:scale-105"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
+          }}
+        />
+        {/* 图片大部分清晰显示，仅底部小幅度向下淡出；米色遮罩保持清淡，避免白雾感 */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#f5ebe0]/25 via-[#f5ebe0]/10 to-transparent"></div>
       </div>
 
       <div className="px-5 sm:px-8 md:px-16 pb-10 md:pb-16 relative">
@@ -140,13 +149,13 @@ export default function AboutClient({
         <div className="mt-4 md:mt-6 mb-6 md:mb-8 relative flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-4">
           <div className="text-center md:text-left">
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-1 md:mb-3 transition-colors duration-700">关于我</h1>
-            <p className="text-sm md:text-lg text-indigo-600 dark:text-indigo-400 font-bold tracking-widest uppercase transition-colors duration-700">Hello World, I'm {siteConfig.authorName}</p>
+            <p className="text-sm md:text-lg text-orange-600 dark:text-orange-400 font-bold tracking-widest uppercase transition-colors duration-700">Hello World, I'm {siteConfig.authorName}</p>
           </div>
 
           <div className="flex items-center w-full md:w-auto gap-1 bg-white/50 dark:bg-slate-900/50 p-1 md:p-1.5 rounded-xl md:rounded-2xl shadow-inner border border-white/40 dark:border-white/5">
             <button
               onClick={() => handleTabChange('intro')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-black transition-all duration-300 ${activeTab === 'intro' ? 'bg-indigo-500 text-white shadow-md' : 'text-slate-500 hover:text-indigo-500'}`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-black transition-all duration-300 ${activeTab === 'intro' ? 'bg-orange-500 text-white shadow-md' : 'text-slate-500 hover:text-orange-500'}`}
             >
               自我介绍
             </button>

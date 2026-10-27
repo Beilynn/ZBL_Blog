@@ -38,8 +38,8 @@ export default function CloudPlayer() {
   if (isLoading) {
     return (
       <div className="h-full w-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl p-6 flex flex-col items-center justify-center transition-colors duration-700">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <span className="text-slate-800 dark:text-white font-bold tracking-widest animate-pulse text-sm">CONNECTING...</span>
+        <div className="w-10 h-10 border-4 border-orange-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <span className="text-slate-800 font-bold tracking-widest animate-pulse text-sm">CONNECTING...</span>
       </div>
     );
   }
@@ -83,7 +83,7 @@ export default function CloudPlayer() {
   return (
     <>
       <style>{`
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #6366f1; cursor: pointer; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #f97316; cursor: pointer; transition: transform 0.1s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
         @keyframes safeWave { 0%, 100% { height: 4px; } 50% { height: 28px; } }
         .safe-wave { animation: safeWave 1s ease-in-out infinite; transform-origin: bottom; will-change: height; }
@@ -131,22 +131,22 @@ export default function CloudPlayer() {
               value={progress}
               onChange={safeHandleSeek}
               className="flex-1 h-1 bg-white/40 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
-              style={{ background: `linear-gradient(to right, #818cf8 ${progress}%, rgba(148,163,184,0.4) ${progress}%)` }}
+              style={{ background: `linear-gradient(to right, #fb923c ${progress}%, rgba(148,163,184,0.4) ${progress}%)` }}
             />
             <span className="w-8">{formatTime(duration)}</span>
           </div>
 
           {/* 🌟 核心拦截：使用我们上面写的 safe 函数，阻止事件冒泡 */}
           <div className="flex items-center justify-center gap-4">
-            <button onClick={safePrevSong} className="text-slate-700 hover:text-indigo-600 transition-colors drop-shadow-sm relative z-20">
+            <button onClick={safePrevSong} className="text-slate-700 hover:text-orange-600 transition-colors drop-shadow-sm relative z-20">
                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
             </button>
 
-            <button onClick={safeTogglePlay} className="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-600 hover:scale-110 transition-all border-2 border-white/50 relative z-20">
+            <button onClick={safeTogglePlay} className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 hover:scale-110 transition-all border-2 border-white/50 relative z-20">
               {isPlaying ? <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> : <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>}
             </button>
 
-            <button onClick={safeNextSong} className="text-slate-700 hover:text-indigo-600 transition-colors drop-shadow-sm relative z-20">
+            <button onClick={safeNextSong} className="text-slate-700 hover:text-orange-600 transition-colors drop-shadow-sm relative z-20">
                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
             </button>
           </div>

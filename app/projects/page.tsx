@@ -5,7 +5,7 @@ import {siteConfig} from "@/siteConfig";
 
 export const metadata = {
   title: "项目矩阵 | " + siteConfig.title,
-  description: "开源项目与代码仓库展示",
+  description: "开源项目、学习资料与心理学工具导航",
 };
 
 export default function ProjectsPage() {
@@ -13,7 +13,7 @@ export default function ProjectsPage() {
     <div className="min-h-screen relative pb-20">
       <Navbar />
       <PageTransition>
-        <div className="mt-28">
+        <div className="mt-20">
           <ProjectsBoard />
         </div>
       </PageTransition>

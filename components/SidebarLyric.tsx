@@ -28,7 +28,7 @@ export default function SidebarLyric() {
 
   return (
     <div className="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl p-6 border border-white/40 dark:border-white/10 shadow-xl transition-colors duration-700">
-      <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-indigo-500 pl-2 text-sm">NOW PLAYING</h3>
+      <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-orange-500 pl-2 text-sm">NOW PLAYING</h3>
 
       <div className="flex items-center gap-4 mb-4">
         {/* 旋转封面 */}
@@ -47,9 +47,9 @@ export default function SidebarLyric() {
 
       {/* 歌词打字机 */}
       <div className="bg-slate-100/50 dark:bg-slate-900/50 p-3 rounded-xl min-h-[60px] flex items-center justify-center text-center shadow-inner">
-        <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+        <p className="text-xs font-bold text-orange-600 dark:text-orange-400">
           {displayedLyric}
-          <span className="inline-block w-[3px] h-3 ml-1 bg-indigo-500 animate-cursor align-middle"></span>
+          <span className="inline-block w-[3px] h-3 ml-1 bg-orange-500 animate-cursor align-middle"></span>
         </p>
       </div>
 

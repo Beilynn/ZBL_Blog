@@ -3,10 +3,10 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import TimelineNode from './TimelineNode';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Sparkles, LayoutGrid, ListTree, Calendar, Hash, ArrowUp } from 'lucide-react';
+import { Search, Sparkles, LayoutGrid, ListTree, Calendar, Hash, ArrowUp, ArrowUpRight, Folder } from 'lucide-react';
 import Link from 'next/link';
 
-export default function TimelineClient({ posts: initialPosts, tags }: { posts: any[], tags: { name: string, count: number }[] }) {
+export default function TimelineClient({ posts: initialPosts, categories }: { posts: any[], categories: { name: string, count: number }[] }) {
   const [posts, setPosts] = useState(initialPosts);
   const [selectedTag, setSelectedTag] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +55,7 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
 
   const timelinePosts = useMemo(() => {
     return posts.filter(post => {
-      return selectedTag === 'All' || post.tags?.includes(selectedTag);
+      return selectedTag === 'All' || post.category === selectedTag;
     });
   }, [posts, selectedTag]);
 
@@ -81,7 +81,7 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
       <div className="text-center mb-12 relative z-20">
         <h1 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-4">归档与探索</h1>
         <p className="text-slate-500 dark:text-slate-400 font-medium flex items-center justify-center gap-2 italic">
-          <Sparkles size={16} className="text-indigo-500" /> 总计 {posts.length} 篇研究记录
+          <Sparkles size={16} className="text-orange-500" /> 总计 {posts.length} 篇研究记录
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
             onFocus={() => setIsDropdownOpen(true)}
             className="w-full bg-[#fdf6ec]/80 backdrop-blur-xl border border-[#e8d5c4]/50 rounded-full px-6 py-4 pl-14 text-slate-800 shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition-all placeholder-slate-500 font-medium relative z-20"
           />
-          <Search className="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors z-20" />
+          <Search className="w-6 h-6 absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors z-20" />
 
           <AnimatePresence>
             {isDropdownOpen && searchQuery.trim() !== '' && (
@@ -112,15 +112,20 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
               >
                 {searchResults.length > 0 ? (
                   <div className="flex flex-col py-2">
-                    {searchResults.map((post) => (
-                      <Link
-                        href={`/posts/${post.slug}`}
+                    {searchResults.map((post) => {
+                      const SearchWrap: any = post.external ? 'a' : Link;
+                      const searchProps = post.external
+                        ? { href: post.url, target: '_blank', rel: 'noopener noreferrer' }
+                        : { href: `/posts/${post.slug}` };
+                      return (
+                      <SearchWrap
+                        {...searchProps}
                         key={post.slug}
                         onClick={() => setIsDropdownOpen(false)}
-                        className="px-6 py-4 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors group border-b border-slate-100/50 dark:border-slate-800/50 last:border-0 flex flex-col gap-1.5"
+                        className="px-6 py-4 hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-colors group border-b border-slate-100/50 dark:border-slate-800/50 last:border-0 flex flex-col gap-1.5"
                       >
                         <div className="flex items-center justify-between">
-                          <h4 className="text-base font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1 pr-4">
+                          <h4 className="text-base font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-1 pr-4">
                             {post.title}
                           </h4>
                           <span className="text-[10px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md shrink-0">
@@ -130,8 +135,9 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
                         <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 leading-relaxed">
                           {post.description}
                         </p>
-                      </Link>
-                    ))}
+                      </SearchWrap>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="px-6 py-8 text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
@@ -148,9 +154,10 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
             <button onClick={() => setSelectedTag('All')} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${selectedTag === 'All' ? 'bg-orange-500 text-white shadow-md' : 'bg-[#f5ebe0] text-slate-600 hover:bg-[#e8d5c4]'}`}>
               全部档案
             </button>
-            {tags.map(tag => (
-              <button key={tag.name} onClick={() => setSelectedTag(tag.name)} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${selectedTag === tag.name ? 'bg-orange-500 text-white shadow-md' : 'bg-[#f5ebe0] text-slate-600 hover:bg-[#e8d5c4]'}`}>
-                {tag.name} <span className="opacity-50 ml-1">{tag.count}</span>
+            {categories.map(cat => (
+              <button key={cat.name} onClick={() => setSelectedTag(cat.name)} className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${selectedTag === cat.name ? 'bg-orange-500 text-white shadow-md' : 'bg-[#f5ebe0] text-slate-600 hover:bg-[#e8d5c4]'}`}>
+                <Folder size={12} className={selectedTag === cat.name ? 'text-white' : 'text-orange-400'} />
+                {cat.name} <span className="opacity-50 ml-1">{cat.count}</span>
               </button>
             ))}
           </div>
@@ -196,22 +203,48 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
             >
               {/* 🌟 核心魔法 3：强制手机端 grid-cols-2 双列显示，减小 gap */}
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 pt-4 pb-10">
-                {timelinePosts.map((post, idx) => (
+                {timelinePosts.map((post, idx) => {
+                  const CardWrap: any = post.external ? 'a' : Link;
+                  const cardProps = post.external
+                    ? { href: post.url, target: '_blank', rel: 'noopener noreferrer' }
+                    : { href: `/posts/${post.slug}` };
+                  return (
                   <motion.div key={post.slug} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: idx * 0.05 }}>
                     <div className="bg-[#fdf6ec]/80 backdrop-blur-xl border border-[#e8d5c4]/50 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg flex flex-col h-full group relative hover:-translate-y-1 transition-transform duration-300">
 
-                      <Link href={`/posts/${post.slug}`} className="block flex-1 flex flex-col cursor-pointer">
-                        {/* 🌟 图片高度自适应：手机变矮，电脑变高 */}
-                        <div className="relative h-28 sm:h-36 md:h-40 overflow-hidden">
-                          <img src={post.cover} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                          {/* 🌟 日期标签微缩 */}
-                          <span className="absolute bottom-2 left-2 md:bottom-3 md:left-4 text-white text-[9px] md:text-xs font-mono font-bold bg-black/30 backdrop-blur-sm px-1.5 py-0.5 md:px-2 md:py-1 rounded flex items-center gap-1">
-                            <Calendar size={10} className="md:w-3 md:h-3"/> {post.date.split(' ')[0]}
-                          </span>
-                        </div>
+                      <CardWrap {...cardProps} className="block flex-1 flex flex-col cursor-pointer">
+                        {post.cover ? (
+                          <div className="relative h-28 sm:h-36 md:h-40 overflow-hidden">
+                            <img src={post.cover} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                            {post.external && (
+                              <span className="absolute top-2 right-2 text-white bg-white/25 backdrop-blur-sm rounded-full p-1">
+                                <ArrowUpRight size={12} />
+                              </span>
+                            )}
+                            {post.external ? (
+                              <span className="absolute bottom-2 left-2 md:bottom-3 md:left-4 text-white text-[9px] md:text-xs font-mono font-bold bg-black/25 backdrop-blur-sm px-1.5 py-0.5 md:px-2 md:py-1 rounded">
+                                在线作品 · {post.date.split(' ')[0]}
+                              </span>
+                            ) : (
+                              <span className="absolute bottom-2 left-2 md:bottom-3 md:left-4 text-white text-[9px] md:text-xs font-mono font-bold bg-black/30 backdrop-blur-sm px-1.5 py-0.5 md:px-2 md:py-1 rounded flex items-center gap-1">
+                                <Calendar size={10} className="md:w-3 md:h-3"/> {post.date.split(' ')[0]}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="relative h-28 sm:h-36 md:h-40 overflow-hidden bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center">
+                            <span className="text-4xl drop-shadow-md">{post.icon}</span>
+                            <span className="absolute top-2 right-2 text-white bg-white/25 backdrop-blur-sm rounded-full p-1">
+                              <ArrowUpRight size={12} />
+                            </span>
+                            <span className="absolute bottom-2 left-2 md:bottom-3 md:left-4 text-white text-[9px] md:text-xs font-mono font-bold bg-black/25 backdrop-blur-sm px-1.5 py-0.5 md:px-2 md:py-1 rounded">
+                              在线作品 · {post.date.split(' ')[0]}
+                            </span>
+                          </div>
+                        )}
 
-                        {/* 🌟 文本边距和字号全方位缩放 */}
+                        {/* 文本边距和字号全方位缩放 */}
                         <div className="p-3 md:p-5 flex-1 flex flex-col">
                           <h3 className="text-xs sm:text-sm md:text-lg font-bold text-slate-800 mb-1 md:mb-2 line-clamp-2 transition-colors group-hover:text-orange-500">{post.title}</h3>
                           <p className="text-[10px] sm:text-xs md:text-sm text-slate-600 mb-2 md:mb-4 line-clamp-2 flex-1 leading-snug">{post.description || "暂时没有描述喵..."}</p>
@@ -221,11 +254,12 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
                             ))}
                           </div>
                         </div>
-                      </Link>
+                      </CardWrap>
 
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -237,7 +271,7 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.5, y: 10 }}
                   onClick={scrollToTop}
-                  className="absolute bottom-4 -right-3 w-9 h-9 flex items-center justify-center bg-gradient-to-t from-purple-500 to-indigo-500 text-white rounded-full shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 hover:-translate-y-1 transition-all z-50 group pointer-events-auto"
+                  className="absolute bottom-4 -right-3 w-9 h-9 flex items-center justify-center bg-gradient-to-t from-amber-500 to-orange-500 text-white rounded-full shadow-lg shadow-amber-500/40 hover:shadow-amber-500/60 hover:-translate-y-1 transition-all z-50 group pointer-events-auto"
                   title="回到顶部"
                 >
                   <ArrowUp size={18} className="group-hover:-translate-y-1 transition-transform" />
@@ -258,7 +292,7 @@ export default function TimelineClient({ posts: initialPosts, tags }: { posts: a
             transition={{ duration: 0.3 }}
             className="relative overflow-hidden p-2 md:p-10 min-h-[500px]"
           >
-            <div className="absolute border-opacity-20 border-indigo-500 dark:border-indigo-400/20 h-full border-2 left-1/2 transform -translate-x-1/2 rounded-full transition-colors duration-1000"></div>
+            <div className="absolute border-opacity-20 border-orange-500 dark:border-orange-400/20 h-full border-2 left-1/2 transform -translate-x-1/2 rounded-full transition-colors duration-1000"></div>
 
             <div className="relative z-10 flex flex-col gap-16">
               <AnimatePresence mode='popLayout'>

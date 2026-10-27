@@ -20,7 +20,7 @@ export default function ProfileCard({ postCount, chatterCount, photoCount }: { p
     >
       <div className="flex items-start justify-between relative z-10">
         <div className="flex items-center gap-4 md:gap-6 w-full">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl md:rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 p-1 shadow-lg flex-shrink-0 transition-transform duration-500 group-hover:rotate-3">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl md:rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 p-1 shadow-lg flex-shrink-0 transition-transform duration-500 group-hover:rotate-3">
             <img src={siteConfig.avatarUrl} alt="avatar" className="w-full h-full rounded-lg md:rounded-xl object-cover bg-white" />
           </div>
           <div className="flex-1 min-w-0">
@@ -40,9 +40,9 @@ export default function ProfileCard({ postCount, chatterCount, photoCount }: { p
 
       <div className="flex flex-col md:flex-row items-center md:items-end justify-between mt-6 md:mt-8 gap-5 md:gap-6 relative z-10">
         <div className="flex gap-2 sm:gap-6 w-full md:w-auto justify-between sm:justify-around md:justify-start px-2 sm:px-0">
-          <StatItem count={postCount} label="文章" color="text-indigo-600 dark:text-indigo-400" />
+          <StatItem count={postCount} label="文章" color="text-orange-600 dark:text-orange-400" />
           <div className="w-px h-8 md:h-10 bg-slate-300/50 dark:bg-slate-700 hidden md:block"></div>
-          <StatItem count={chatterCount} label="杂谈" color="text-purple-600 dark:text-purple-400" />
+          <StatItem count={chatterCount} label="杂谈" color="text-amber-600 dark:text-amber-400" />
           <div className="w-px h-8 md:h-10 bg-slate-300/50 dark:bg-slate-700 hidden md:block"></div>
           <StatItem count={photoCount} label="照片" color="text-pink-600 dark:text-pink-400" />
         </div>
@@ -85,7 +85,7 @@ function SocialBtn({ type, url, onClick }: { type: string, url?: string, onClick
   const content = (
     <div
       onClick={onClick}
-      className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-white/50 dark:bg-slate-700/50 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-all duration-300 border border-white/40 dark:border-white/10 shadow-sm"
+      className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-white/50 dark:bg-slate-700/50 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-600 dark:hover:text-white transition-all duration-300 border border-white/40 dark:border-white/10 shadow-sm"
       title={type}
     >
       {getIcon()}

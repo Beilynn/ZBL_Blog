@@ -12,6 +12,7 @@ import WeatherWidget from '../components/WeatherWidget';
 import ClockCalendarWidget from '../components/ClockCalendarWidget';
 import WhackAMoleWidget from '../components/WhackAMoleWidget';
 import ContactLinks from '../components/ContactLinks';
+import PsyNews from '../components/PsyNews';
 import { albums } from '../data/albums';
 import { ToastProvider } from '../components/ToastProvider';
 
@@ -142,6 +143,16 @@ export default function Home() {
                     </div>
                     {/* 联系方式 */}
                     <ContactLinks/>
+                    <a
+                      href="https://beilynn.github.io/Resume/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-semibold py-2.5 shadow-md shadow-orange-200/60 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                      <span aria-hidden="true">📄</span>
+                      查看我的简历
+                      <span aria-hidden="true" className="text-xs">↗</span>
+                    </a>
                   </div>
                   
                   {/* 导航卡片 */}
@@ -165,8 +176,9 @@ export default function Home() {
                   <WeatherWidget/>
                 </div>
 
-                {/* 中列：文章列表 */}
+                {/* 中列：心理学动态 + 本地文章 */}
                 <div className="col-span-1 lg:col-span-6 flex flex-col gap-4">
+                  <PsyNews />
                   {allPosts.slice(0, 6).map((post) => (
                     <Link 
                       key={post.slug} 

@@ -173,7 +173,7 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
   if (isLoading) {
     return (
       <div className="md:col-span-5 rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl p-6 flex flex-col items-center justify-center transition-colors duration-700 h-[220px]">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
         {/* 【修改点】：文字加入 dark:text-white */}
         <span className="text-slate-800 dark:text-white font-bold tracking-widest animate-pulse text-sm">CONNECTING...</span>
       </div>
@@ -204,7 +204,7 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
       {/* 音乐播放器卡片主体：加入 dark 模式背景适配 */}
       <div className="md:col-span-5 rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl p-6 flex flex-col justify-between transition-all duration-700 hover:scale-[1.02] relative group overflow-hidden min-h-[220px]">
         <audio ref={audioRef} src={currentSong.src} onTimeUpdate={handleTimeUpdate} onEnded={nextSong} onLoadedMetadata={handleTimeUpdate} />
-        <div className={`absolute -top-20 -right-20 w-48 h-48 bg-indigo-500/20 blur-[50px] rounded-full transition-opacity duration-1000 ${isPlaying ? 'opacity-100' : 'opacity-30'}`}></div>
+        <div className={`absolute -top-20 -right-20 w-48 h-48 bg-orange-500/20 blur-[50px] rounded-full transition-opacity duration-1000 ${isPlaying ? 'opacity-100' : 'opacity-30'}`}></div>
 
         <div className="flex items-center gap-5 relative z-10 mb-6 mt-2">
           <div className={`w-20 h-20 rounded-full border-2 border-white/50 shadow-lg flex-shrink-0 overflow-hidden relative ${isPlaying ? 'animate-[spin_6s_linear_infinite]' : ''}`}>
@@ -214,7 +214,7 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
           </div>
           <div className="flex-col overflow-hidden w-full">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] font-black text-indigo-500 dark:text-indigo-400 tracking-widest uppercase bg-white/50 dark:bg-slate-900/50 px-2 py-0.5 rounded-sm shadow-sm transition-colors duration-700">Cloud Music</span>
+              <span className="text-[10px] font-black text-orange-500 dark:text-orange-400 tracking-widest uppercase bg-white/50 dark:bg-slate-900/50 px-2 py-0.5 rounded-sm shadow-sm transition-colors duration-700">Cloud Music</span>
               <span className="text-xs font-bold text-slate-600 dark:text-slate-300 bg-white/40 dark:bg-slate-700/50 px-2 rounded-full transition-colors duration-700">{currentIndex + 1} / {playlist.length}</span>
             </div>
             {/* 【修改点】：歌曲标题和歌手加上暗色模式字体 */}
@@ -235,25 +235,25 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
           </div>
 
           <div className="flex items-center justify-center gap-6">
-            <button onClick={prevSong} className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-            <button onClick={togglePlay} className="w-12 h-12 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-600 hover:scale-110 transition-all border-2 border-white/50 dark:border-slate-600">
+            <button onClick={prevSong} className="text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors drop-shadow-sm"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+            <button onClick={togglePlay} className="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 hover:scale-110 transition-all border-2 border-white/50 dark:border-slate-600">
               {isPlaying ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> : <svg className="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>}
             </button>
-            <button onClick={nextSong} className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+            <button onClick={nextSong} className="text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors drop-shadow-sm"><svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
           </div>
         </div>
       </div>
 
       {/* 底部独立歌词长条：夜晚可以稍微更黑一点以凸显发光字体 */}
-      <div className="md:col-span-12 order-last mt-4 rounded-3xl bg-slate-900/80 dark:bg-slate-950/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 flex items-center justify-between transition-all duration-700 hover:shadow-indigo-500/20 group min-h-[80px]">
+      <div className="md:col-span-12 order-last mt-4 rounded-3xl bg-slate-900/80 dark:bg-slate-950/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 flex items-center justify-between transition-all duration-700 hover:shadow-orange-500/20 group min-h-[80px]">
         <div className="flex items-end justify-center gap-[4px] h-8 w-16">
           {isPlaying ? (
             <>
-              <div className="w-1.5 bg-indigo-400 rounded-t-sm safe-wave" style={{ animationDelay: '0ms' }}></div>
-              <div className="w-1.5 bg-purple-400 rounded-t-sm safe-wave" style={{ animationDelay: '200ms' }}></div>
-              <div className="w-1.5 bg-indigo-500 rounded-t-sm safe-wave" style={{ animationDelay: '400ms' }}></div>
-              <div className="w-1.5 bg-purple-500 rounded-t-sm safe-wave" style={{ animationDelay: '100ms' }}></div>
-              <div className="w-1.5 bg-indigo-300 rounded-t-sm safe-wave" style={{ animationDelay: '300ms' }}></div>
+              <div className="w-1.5 bg-orange-400 rounded-t-sm safe-wave" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-1.5 bg-amber-400 rounded-t-sm safe-wave" style={{ animationDelay: '200ms' }}></div>
+              <div className="w-1.5 bg-orange-500 rounded-t-sm safe-wave" style={{ animationDelay: '400ms' }}></div>
+              <div className="w-1.5 bg-amber-500 rounded-t-sm safe-wave" style={{ animationDelay: '100ms' }}></div>
+              <div className="w-1.5 bg-orange-300 rounded-t-sm safe-wave" style={{ animationDelay: '300ms' }}></div>
             </>
           ) : (
             <>
@@ -267,14 +267,14 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
         </div>
 
         <div className="flex-1 px-8 flex justify-center items-center overflow-hidden">
-          <p className="text-white text-lg font-bold tracking-widest truncate drop-shadow-[0_0_8px_rgba(99,102,241,0.8)]">
+          <p className="text-white text-lg font-bold tracking-widest truncate drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]">
             {displayedLyric}
-            <span className="inline-block w-[3px] h-5 bg-indigo-400 align-middle ml-1 shadow-[0_0_8px_rgba(99,102,241,0.8)] animate-cursor"></span>
+            <span className="inline-block w-[3px] h-5 bg-orange-400 align-middle ml-1 shadow-[0_0_8px_rgba(249,115,22,0.8)] animate-cursor"></span>
           </p>
         </div>
 
         <div className="w-16 flex justify-end">
-          <svg className={`w-6 h-6 text-indigo-400/50 ${isPlaying ? 'animate-bounce' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className={`w-6 h-6 text-orange-400/50 ${isPlaying ? 'animate-bounce' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
           </svg>
         </div>

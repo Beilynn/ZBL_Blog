@@ -11,6 +11,8 @@ export default function CyberCat() {
   const [isThinking, setIsThinking] = useState(false);
 
   const chatTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // 拖动边界参考：全屏隐形元素，用来限制小猫只在屏幕内移动
+  const constraintsRef = useRef<HTMLDivElement>(null);
 
   // --- 💬 说话功能 ---
   const speak = (text: string, duration = 6000) => {
@@ -108,13 +110,17 @@ export default function CyberCat() {
 
 
   return (
-    <motion.div
-      drag
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      dragElastic={0.1}
-      whileDrag={{ scale: 1.1, cursor: "grabbing" }}
-      className="fixed bottom-20 right-20 z-[9999] flex flex-col items-center group cursor-grab active:cursor-grabbing"
-    >
+    <>
+      {/* 全屏隐形拖动边界：小猫只能在这个范围内移动，不会拖出屏幕 */}
+      <div ref={constraintsRef} className="fixed inset-0 z-[9998] pointer-events-none" />
+
+      <motion.div
+        drag
+        dragConstraints={constraintsRef}
+        dragMomentum={false}
+        whileDrag={{ scale: 1.1, cursor: "grabbing" }}
+        className="fixed bottom-20 right-20 z-[9999] flex flex-col items-center group cursor-grab active:cursor-grabbing"
+      >
       {/* 💬 聊天气泡 */}
       <div className="relative w-full flex justify-center mb-6">
         <AnimatePresence>
@@ -123,11 +129,11 @@ export default function CyberCat() {
               initial={{ opacity: 0, y: 10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-              className="absolute bottom-0 bg-white dark:bg-slate-800 text-slate-700 dark:text-gray-200 px-4 py-3 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 text-sm max-w-[240px] break-words text-center leading-relaxed"
+              className="absolute bottom-0 bg-[#fffaf2] text-slate-700 px-4 py-3 rounded-2xl shadow-lg border border-[#e8d5c4] text-sm max-w-[240px] break-words text-center leading-relaxed"
               style={{ pointerEvents: 'none', transformOrigin: 'bottom center' }}
             >
               {speech}
-              <div className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white dark:bg-slate-800 border-b border-r border-gray-100 dark:border-slate-700 transform rotate-45"></div>
+              <div className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#fffaf2] border-b border-r border-[#e8d5c4] transform rotate-45"></div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -145,8 +151,7 @@ export default function CyberCat() {
                  e.stopPropagation();
                  setShowInput(!showInput);
               }}
-              // 稍微加了一点半透明背景，让常驻按钮在深色背景下也好看
-              className="bg-white/90 dark:bg-slate-700/90 p-2.5 rounded-full shadow-md hover:scale-110 active:scale-95 transition-transform border border-gray-100 dark:border-slate-600 text-blue-500 hover:text-blue-600 flex items-center justify-center backdrop-blur-sm"
+              className="bg-[#fdf6ec] p-2.5 rounded-full shadow-md hover:scale-110 active:scale-95 transition-transform border border-[#e8d5c4] text-orange-500 hover:text-orange-600 flex items-center justify-center backdrop-blur-sm"
               title="聊天"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
@@ -158,7 +163,7 @@ export default function CyberCat() {
             <button
               onClick={handleFeed}
               disabled={isThinking}
-              className={`bg-white/90 dark:bg-slate-700/90 p-2.5 rounded-full shadow-md hover:scale-110 active:scale-95 transition-transform border border-gray-100 dark:border-slate-600 flex items-center justify-center backdrop-blur-sm ${isThinking ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-[#fdf6ec] p-2.5 rounded-full shadow-md hover:scale-110 active:scale-95 transition-transform border border-[#e8d5c4] flex items-center justify-center backdrop-blur-sm ${isThinking ? 'opacity-50 cursor-not-allowed' : ''}`}
               title="喂小鱼干"
             >
               <span className="text-xl leading-none">🐟</span>
@@ -174,22 +179,22 @@ export default function CyberCat() {
             .cat-sprite {
               width: 100%;
               height: 100%;
-              background-image: url('/siamese-cat.png'); 
-              background-size: 300% 300%; 
+              background-image: url('/siamese-cat.png');
+              background-size: 300% 300%;
               background-repeat: no-repeat;
-              image-rendering: pixelated; 
+              image-rendering: pixelated;
             }
             .cat-idle {
               animation: idle-frames 1.2s infinite;
-              background-position-y: 0%; 
+              background-position-y: 0%;
             }
             .cat-petted {
               animation: pet-frames 0.8s infinite;
-              background-position-y: 50%; 
+              background-position-y: 50%;
             }
             .cat-thinking {
               animation: idle-frames 0.6s infinite;
-              background-position-y: 0%; 
+              background-position-y: 0%;
             }
             @keyframes idle-frames {
               0%, 33.32% { background-position-x: 0%; }
@@ -213,14 +218,14 @@ export default function CyberCat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             onSubmit={handleChatSubmit}
-            className="absolute -bottom-14 bg-white dark:bg-slate-800 p-1.5 rounded-full shadow-lg flex items-center border border-gray-200 dark:border-slate-700 w-56 z-20"
+            className="absolute -bottom-14 bg-[#fffaf2] p-1.5 rounded-full shadow-lg flex items-center border border-[#e8d5c4] w-56 z-20"
           >
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="跟煤球说点啥喵..."
-              className="bg-transparent border-none outline-none text-sm px-3 py-1 w-full dark:text-white placeholder-gray-400"
+              className="bg-transparent border-none outline-none text-sm px-3 py-1 w-full text-slate-700 placeholder-gray-400"
               disabled={isThinking}
               autoFocus
             />
@@ -228,7 +233,7 @@ export default function CyberCat() {
               type="submit"
               disabled={isThinking || !inputValue.trim()}
               className={`rounded-full p-1.5 ml-1 flex items-center justify-center transition-colors ${
-                isThinking || !inputValue.trim() ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 hover:bg-blue-600 text-white'
+                isThinking || !inputValue.trim() ? 'bg-gray-200 text-gray-400' : 'bg-orange-500 hover:bg-orange-600 text-white'
               }`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -239,5 +244,6 @@ export default function CyberCat() {
         )}
       </AnimatePresence>
     </motion.div>
+    </>
   );
 }

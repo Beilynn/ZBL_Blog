@@ -32,15 +32,15 @@ export default function GlobalToolbox() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
-            className="mb-2 bg-white/70 dark:bg-slate-800/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-3xl p-4 w-64 flex flex-col gap-4 overflow-hidden"
+            className="mb-2 bg-[#fdf6ec]/95 backdrop-blur-2xl border border-[#e8d5c4] shadow-xl rounded-3xl p-4 w-64 flex flex-col gap-4 overflow-hidden"
           >
             {/* 动态渲染：工具箱导航栏 */}
-            <div className="flex flex-wrap gap-2 border-b border-slate-300/50 dark:border-slate-700/50 pb-3">
+            <div className="flex flex-wrap gap-2 border-b border-[#e8d5c4] pb-3">
               {TOOL_REGISTRY.map(tool => (
                 <button
                   key={tool.id}
                   onClick={() => setActiveToolId(activeToolId === tool.id ? null : tool.id)}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-full transition-colors ${activeToolId === tool.id ? 'bg-indigo-500 text-white shadow-md' : 'bg-white/50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'}`}
+                  className={`text-xs font-bold px-3 py-1.5 rounded-full transition-colors ${activeToolId === tool.id ? 'bg-orange-500 text-white shadow-md' : 'bg-white/70 text-slate-600 hover:bg-[#f5ebe0]'}`}
                 >
                   {tool.icon} {tool.name}
                 </button>
@@ -73,8 +73,8 @@ export default function GlobalToolbox() {
       {/* 悬浮主开关按钮 */}
       <button
         onClick={() => { setIsOpen(!isOpen); if (!isOpen && !activeToolId) setActiveToolId(TOOL_REGISTRY[0].id); }}
-        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-xl backdrop-blur-xl border border-white/40 dark:border-white/10 transition-all duration-500 hover:scale-110 active:scale-95 z-50
-          ${isOpen ? 'bg-indigo-500 text-white rotate-45' : 'bg-white/70 dark:bg-slate-800/80 text-slate-700 dark:text-white'}
+        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-xl backdrop-blur-xl border border-[#e8d5c4] transition-all duration-500 hover:scale-110 active:scale-95 z-50
+          ${isOpen ? 'bg-orange-500 text-white rotate-45' : 'bg-[#fdf6ec] text-slate-700'}
         `}
       >
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

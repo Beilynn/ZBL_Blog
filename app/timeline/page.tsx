@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import PageTransition from '../../components/PageTransition';
 import { siteConfig } from '../../siteConfig';
 import TimelineClient from '../../components/TimelineClient';
+import { featuredLinks } from '../../data/featured';
 // 🌟 1. 引入 ToastProvider 喵！
 import { ToastProvider } from '../../components/ToastProvider';
 
@@ -15,7 +16,7 @@ export const metadata = {
 export default function Timeline() {
   const postsDirectory = path.join(process.cwd(), 'posts');
   let posts: any[] = [];
-  let tagCounts: Record<string, number> = {};
+  let categoryCounts: Record<string, number> = {};
 
   try {
     if (fs.existsSync(postsDirectory)) {
@@ -28,11 +29,10 @@ export default function Timeline() {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data } = matter(fileContents);
 
-        const postTags = data.tags && Array.isArray(data.tags) ? data.tags : ['未分类'];
+        const postTags = data.tags && Array.isArray(data.tags) ? data.tags : [];
+        const postCategory = data.category || '文献阅读';
 
-        postTags.forEach(tag => {
-          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-        });
+        categoryCounts[postCategory] = (categoryCounts[postCategory] || 0) + 1;
 
         posts.push({
           slug,
@@ -40,7 +40,28 @@ export default function Timeline() {
           date: data.date || '1970-01-01',
           description: data.description || '',
           tags: postTags,
+          category: postCategory,
           cover: data.cover || siteConfig.defaultPostCover,
+        });
+      });
+
+      // 外链作品节点（在线简历、AI 科普站）：作为时间轴条目收录
+      const now = new Date();
+      const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      featuredLinks.forEach((f) => {
+        categoryCounts[f.category] = (categoryCounts[f.category] || 0) + 1;
+        posts.push({
+          slug: `ext-${f.id}`,
+          title: f.name,
+          date: today,
+          description: f.description,
+          tags: f.tags,
+          category: f.category,
+          cover: f.coverImage || '',
+          external: true,
+          url: f.url,
+          icon: f.icon,
+          kind: f.kind,
         });
       });
 
@@ -53,8 +74,8 @@ export default function Timeline() {
     console.error("读取文章列表失败", e);
   }
 
-  const tagsArray = Object.keys(tagCounts)
-    .map(name => ({ name, count: tagCounts[name] }))
+  const categoriesArray = Object.keys(categoryCounts)
+    .map(name => ({ name, count: categoryCounts[name] }))
     .sort((a, b) => b.count - a.count);
 
   return (
@@ -63,7 +84,7 @@ export default function Timeline() {
       <div className="min-h-screen relative pb-32">
         <Navbar />
         <PageTransition>
-          <TimelineClient posts={posts} tags={tagsArray} />
+          <TimelineClient posts={posts} categories={categoriesArray} />
         </PageTransition>
       </div>
     </ToastProvider>

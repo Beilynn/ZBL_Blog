@@ -51,7 +51,7 @@ export default function SplashScreen() {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-60 blur-[3px]"
+                className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-orange-500 via-amber-500 to-pink-500 opacity-60 blur-[3px]"
               />
               <div className="relative w-full h-full rounded-full p-1.5 bg-white dark:bg-slate-900 shadow-xl">
                 <img src={siteConfig.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
@@ -68,7 +68,7 @@ export default function SplashScreen() {
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 1.8, ease: "easeInOut" }}
-                className="absolute top-0 left-0 h-full bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.8)]"
+                className="absolute top-0 left-0 h-full bg-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.8)]"
               />
             </div>
           </div>

@@ -67,7 +67,7 @@ export default function CreativeWorkshopClient({ posts = [], chatters = [], mome
 
       // 5. 打印高度拟真化的控制台干员档案
       console.groupCollapsed(`🛡️ [罗德岛数据终端] 干员 XingHuiSama 个人综合档案同步...`);
-      console.log(`%c[当前等级] Lv.${level}`, 'color: #6366f1; font-weight: 900; font-size: 16px; text-shadow: 0 0 4px rgba(99,102,241,0.3);');
+      console.log(`%c[当前等级] Lv.${level}`, 'color: #6366f1; font-weight: 900; font-size: 16px; text-shadow: 0 0 4px rgba(249,115,22,0.3);');
       console.log(`%c[升级进度] ${remainingExp} / ${expNeededForNextLevel} EXP (${progressPercent}%)`, 'color: #10b981; font-weight: bold;');
       console.log(`[总计累计] ${totalExp} EXP`);
       console.log(`%c[渐近公式] EXP_Next = 150 + Math.floor((2000 * (L-1)) / ((L-1) + 10)) [极限上限: 2150]`, 'color: #8b5cf6; font-style: italic;');
@@ -95,7 +95,7 @@ export default function CreativeWorkshopClient({ posts = [], chatters = [], mome
           {/* 顶部标题栏 */}
           <div className="w-full flex flex-col items-center mb-16 animate-fade-in-up text-center">
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-widest mb-3 flex items-center justify-center gap-3 transition-colors duration-700">
-              <Trees className="text-indigo-500" size={40} /> 灵境
+              <Trees className="text-orange-500" size={40} /> 灵境
             </h1>
             <p className="text-slate-600 dark:text-slate-400 font-medium tracking-wider mb-8 transition-colors duration-700">
               从神秘的记忆试管到深邃的星际巨舰，在这里封存所有的灵感与奇迹
@@ -105,13 +105,13 @@ export default function CreativeWorkshopClient({ posts = [], chatters = [], mome
             <div className="flex bg-white/40 dark:bg-slate-800/40 backdrop-blur-md p-1.5 rounded-full border border-white/50 dark:border-white/10 shadow-sm relative">
               <button
                 onClick={() => setCurrentMode('alchemy')}
-                className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all z-10 flex items-center gap-2 ${currentMode === 'alchemy' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all z-10 flex items-center gap-2 ${currentMode === 'alchemy' ? 'text-orange-600 dark:text-orange-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
               >
                 <Beaker size={16} /> 记忆炼金室
               </button>
               <button
                 onClick={() => setCurrentMode('model')}
-                className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all z-10 flex items-center gap-2 ${currentMode === 'model' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                className={`relative px-6 py-2.5 rounded-full text-sm font-bold transition-all z-10 flex items-center gap-2 ${currentMode === 'model' ? 'text-orange-600 dark:text-orange-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'}`}
               >
                 <Rocket size={16} /> 帝江号舰船
               </button>

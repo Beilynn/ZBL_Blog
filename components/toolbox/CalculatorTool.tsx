@@ -67,11 +67,11 @@ export default function CalculatorTool() {
       className="flex flex-col gap-3"
     >
       {/* 【显示屏扩容】：高度提升到 h-20，增加内边距 p-4 */}
-      <div className="bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 flex flex-col items-end justify-center h-24 shadow-inner border border-slate-200 dark:border-slate-700">
+      <div className="bg-[#f5ebe0] rounded-2xl p-4 flex flex-col items-end justify-center h-24 shadow-inner border border-[#e8d5c4]">
         {/* 公式字号放大到 text-sm */}
-        <span className="text-sm text-slate-400 dark:text-slate-500 tracking-wider h-5 mb-1">{equation}</span>
+        <span className="text-sm text-slate-400 tracking-wider h-5 mb-1">{equation}</span>
         {/* 主数字字号放大到 text-4xl */}
-        <span className="text-4xl font-black text-slate-800 dark:text-white truncate w-full text-right">{display}</span>
+        <span className="text-4xl font-black text-slate-800 truncate w-full text-right">{display}</span>
       </div>
 
       {/* 键盘 */}
@@ -81,9 +81,9 @@ export default function CalculatorTool() {
             key={btn}
             onClick={() => handleCalcClick(btn)}
             className={`h-10 rounded-xl text-sm font-bold flex items-center justify-center shadow-sm active:scale-95 transition-all
-              ${btn === '=' ? 'col-span-2 bg-indigo-500 text-white hover:bg-indigo-600' 
-              : ['C', '(', ')', '/', '*', '-', '+'].includes(btn) ? 'bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20'
-              : 'bg-white/80 dark:bg-slate-700/80 text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-600'}
+              ${btn === '=' ? 'col-span-2 bg-orange-500 text-white hover:bg-orange-600'
+              : ['C', '(', ')', '/', '*', '-', '+'].includes(btn) ? 'bg-orange-500/10 text-orange-600 hover:bg-orange-500/20'
+              : 'bg-white/80 text-slate-700 hover:bg-white'}
             `}
           >
             {btn}

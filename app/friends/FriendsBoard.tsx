@@ -74,16 +74,16 @@ export default function FriendsBoard() {
 
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-5 relative z-10 mb-2 md:mb-4">
 
-                <div className="w-10 h-10 md:w-16 md:h-16 rounded-full p-[2px] md:p-1 bg-gradient-to-tr from-indigo-500/50 to-purple-500/50 shadow-sm md:shadow-md group-hover:rotate-[360deg] transition-transform duration-1000 ease-in-out flex-shrink-0">
+                <div className="w-10 h-10 md:w-16 md:h-16 rounded-full p-[2px] md:p-1 bg-gradient-to-tr from-orange-500/50 to-amber-500/50 shadow-sm md:shadow-md group-hover:rotate-[360deg] transition-transform duration-1000 ease-in-out flex-shrink-0">
                   <img src={friend.avatar} alt={friend.name} className="w-full h-full rounded-full object-cover bg-white" />
                 </div>
 
                 <div className="flex-1 overflow-hidden w-full">
-                  <h2 className="text-sm md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
+                  <h2 className="text-sm md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors truncate">
                     {friend.name}
                   </h2>
-                  <div className="text-[9px] md:text-xs font-bold text-indigo-500/70 dark:text-indigo-400/70 tracking-widest uppercase mt-0.5 md:mt-1 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                  <div className="text-[9px] md:text-xs font-bold text-orange-500/70 dark:text-orange-400/70 tracking-widest uppercase mt-0.5 md:mt-1 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-orange-500 animate-pulse"></span>
                     Online
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function FriendsBoard() {
 
           <button
             onClick={handleCopy}
-            className="absolute top-2 right-2 md:top-3 md:right-3 p-1.5 md:p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-500 transition-all duration-300 shadow-sm backdrop-blur-sm"
+            className="absolute top-2 right-2 md:top-3 md:right-3 p-1.5 md:p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 transition-all duration-300 shadow-sm backdrop-blur-sm"
             title="一键复制"
           >
             {isCopied ? (
@@ -138,7 +138,7 @@ export default function FriendsBoard() {
         <div className="mt-6 md:mt-8">
           <a
             href="#gitalk-container"
-            className="inline-block px-6 py-2.5 md:px-8 md:py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white rounded-full text-sm md:text-base font-bold tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/30"
+            className="inline-block px-6 py-2.5 md:px-8 md:py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-full text-sm md:text-base font-bold tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-orange-500/30"
           >
             前往留言区申请 👇
           </a>

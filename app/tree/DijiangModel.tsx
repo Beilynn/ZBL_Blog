@@ -732,9 +732,9 @@ export default function DijiangModel({ posts = [], chatters = [], moments = [] }
                 </div>
 
                 <div className="flex items-center gap-4 mt-16 mb-8">
-                  <div className="w-12 h-px bg-indigo-400" />
-                  <span className="text-slate-300 text-[10px] font-black tracking-[0.2em] uppercase flex items-center gap-2"><Users size={14} className="text-indigo-400"/> 协同协议 (COMM PROTOCOLS)</span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-indigo-400/50 to-transparent" />
+                  <div className="w-12 h-px bg-orange-400" />
+                  <span className="text-slate-300 text-[10px] font-black tracking-[0.2em] uppercase flex items-center gap-2"><Users size={14} className="text-orange-400"/> 协同协议 (COMM PROTOCOLS)</span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-orange-400/50 to-transparent" />
                 </div>
                 <div className="flex flex-wrap gap-x-6 gap-y-10 justify-center">
                   {rpgStats.allCatalogBadges.filter(b => b.group === 'friend').map(b => (

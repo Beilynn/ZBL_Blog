@@ -96,7 +96,7 @@ export default function SearchBar({ posts = [] }: { posts: Post[] }) {
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors drop-shadow-sm"
+            className="w-5 h-5 text-slate-400 group-focus-within:text-orange-500 transition-colors drop-shadow-sm"
           >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -121,7 +121,7 @@ export default function SearchBar({ posts = [] }: { posts: Post[] }) {
                     href={`/posts/${post.slug}`}
                     key={post.slug}
                     onClick={() => setIsOpen(false)}
-                    className="px-6 py-5 hover:bg-indigo-50/80 dark:hover:bg-indigo-500/10 transition-colors group border-b border-slate-100/50 dark:border-slate-800/50 last:border-0 flex flex-col gap-2"
+                    className="px-6 py-5 hover:bg-orange-50/80 dark:hover:bg-orange-500/10 transition-colors group border-b border-slate-100/50 dark:border-slate-800/50 last:border-0 flex flex-col gap-2"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <h4 className="text-lg font-bold text-slate-800 dark:text-slate-200 transition-colors line-clamp-1">
@@ -163,7 +163,7 @@ export default function SearchBar({ posts = [] }: { posts: Post[] }) {
                   </svg>
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 font-medium">
-                  数据海中未发现关于 "<span className="text-indigo-500 font-bold">{searchQuery}</span>" 的踪迹
+                  数据海中未发现关于 "<span className="text-orange-500 font-bold">{searchQuery}</span>" 的踪迹
                 </p>
               </div>
             )}

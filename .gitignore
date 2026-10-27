@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 示例内容本地备份（不提交到公开仓库）
+/posts_backup/
+/moments_backup/
+
+# 本地工具脚本产物（如需提交可移除下一行）
+generate-albums.ps1

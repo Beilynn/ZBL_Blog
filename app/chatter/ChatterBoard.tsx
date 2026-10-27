@@ -58,9 +58,9 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
             placeholder="搜寻被遗忘的思绪..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-white/40 dark:border-white/5 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 pl-10 md:pl-14 text-sm md:text-base text-slate-800 dark:text-white shadow-lg md:shadow-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all placeholder-slate-400 font-medium"
+            className="w-full bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-white/40 dark:border-white/5 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 pl-10 md:pl-14 text-sm md:text-base text-slate-800 dark:text-white shadow-lg md:shadow-2xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all placeholder-slate-400 font-medium"
           />
-          <svg className="w-4 h-4 md:w-6 md:h-6 absolute left-5 md:left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <svg className="w-4 h-4 md:w-6 md:h-6 absolute left-5 md:left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </div>
 
         <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 px-2 md:px-0">
@@ -70,7 +70,7 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
               onClick={() => setActiveTag(tag)}
               className={`px-3 py-1.5 md:px-5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all duration-500 border ${
                 activeTag === tag 
-                ? 'bg-indigo-500 text-white border-indigo-500 shadow-md md:shadow-lg md:shadow-indigo-500/30 scale-105' 
+                ? 'bg-orange-500 text-white border-orange-500 shadow-md md:shadow-lg md:shadow-orange-500/30 scale-105' 
                 : 'bg-white/30 dark:bg-slate-800/30 text-slate-600 dark:text-slate-400 border-white/20 dark:border-white/5 hover:bg-white/60 dark:hover:bg-slate-700/60'
               }`}
             >
@@ -115,7 +115,7 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
                 {/* 🌟 核心修改 5：内部 padding 极致压缩 p-3 md:p-7 */}
                 <div className="p-3 md:p-7">
                   <div className="flex items-center justify-between mb-2 md:mb-4">
-                    <div className="text-[8px] md:text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-wider md:tracking-[0.2em] bg-indigo-500/5 dark:bg-indigo-400/10 px-1.5 py-0.5 md:px-3 md:py-1 rounded-md md:rounded-lg border border-indigo-500/10">
+                    <div className="text-[8px] md:text-[10px] font-black text-orange-600 dark:text-orange-400 uppercase tracking-wider md:tracking-[0.2em] bg-orange-500/5 dark:bg-orange-400/10 px-1.5 py-0.5 md:px-3 md:py-1 rounded-md md:rounded-lg border border-orange-500/10">
                       {chatter.date}
                     </div>
                     {/* 心情展示 - 无封面版 */}
@@ -128,7 +128,7 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
 
                   {chatter.title && (
                     // 🌟 核心修改 6：标题压缩 text-sm md:text-xl
-                    <h3 className="text-sm md:text-xl font-bold text-slate-800 dark:text-white mb-1.5 md:mb-4 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 md:line-clamp-none">{chatter.title}</h3>
+                    <h3 className="text-sm md:text-xl font-bold text-slate-800 dark:text-white mb-1.5 md:mb-4 leading-tight group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-2 md:line-clamp-none">{chatter.title}</h3>
                   )}
 
                   {/* 🌟 核心修改 7：正文压缩，限制行数 */}
@@ -140,7 +140,7 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
                   {chatter.tags && chatter.tags.length > 0 && (
                     <div className="mt-3 md:mt-6 flex flex-wrap gap-1 md:gap-2">
                       {chatter.tags.map(t => (
-                        <span key={t} className="text-[8px] md:text-[9px] font-black text-slate-500 dark:text-slate-400 bg-slate-500/5 dark:bg-white/5 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-md border border-slate-500/10 dark:border-white/5 transition-all group-hover:bg-indigo-500/10 group-hover:text-indigo-500">
+                        <span key={t} className="text-[8px] md:text-[9px] font-black text-slate-500 dark:text-slate-400 bg-slate-500/5 dark:bg-white/5 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-md border border-slate-500/10 dark:border-white/5 transition-all group-hover:bg-orange-500/10 group-hover:text-orange-500">
                           #{t}
                         </span>
                       ))}

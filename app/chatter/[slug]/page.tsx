@@ -165,7 +165,7 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
                 {/* ✅ 前端展示版：特权修改按钮已彻底移除！ */}
 
                 <div className="flex flex-wrap items-center gap-2 md:gap-3">
-                  <div className="flex items-center gap-1.5 md:gap-2 text-indigo-700 dark:text-indigo-400 font-bold bg-indigo-500/5 dark:bg-indigo-400/10 px-3 md:px-4 py-1.5 md:py-2 rounded-2xl text-xs md:text-sm border border-indigo-500/10">
+                  <div className="flex items-center gap-1.5 md:gap-2 text-orange-700 dark:text-orange-400 font-bold bg-orange-500/5 dark:bg-orange-400/10 px-3 md:px-4 py-1.5 md:py-2 rounded-2xl text-xs md:text-sm border border-orange-500/10">
                     <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     {chatterData.date}
                   </div>
@@ -288,7 +288,7 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
 
           <aside className="w-full lg:w-[320px] flex flex-col gap-6 flex-shrink-0">
             <div className="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl p-6 border border-white/40 dark:border-white/10 shadow-xl text-center">
-              <div className="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-md mb-4 hover:rotate-3 transition-transform">
+              <div className="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-orange-500 to-amber-500 shadow-md mb-4 hover:rotate-3 transition-transform">
                 <img src={siteConfig.avatarUrl} alt="avatar" className="w-full h-full rounded-full object-cover bg-white" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{siteConfig.authorName}</h3>
@@ -310,7 +310,7 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
                   <div key={index} className="flex justify-center items-center">
                     {day ? (
                       <div className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-all duration-300
-                        ${day === dayNum ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/40 scale-110' : 'text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700'}`}>
+                        ${day === dayNum ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/40 scale-110' : 'text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-700'}`}>
                         {day}
                       </div>
                     ) : <div className="w-8 h-8"></div>}
@@ -320,11 +320,11 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
             </div>
 
             <div className="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl p-6 border border-white/40 dark:border-white/10 shadow-xl">
-              <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-indigo-500 pl-2 text-xs tracking-widest uppercase">Recent Records</h3>
+              <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-orange-500 pl-2 text-xs tracking-widest uppercase">Recent Records</h3>
               <div className="space-y-4">
                 {recentChatters.map(p => (
                   <Link key={p.slug} href={`/chatter/${p.slug}`} className="group block">
-                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">{p.title}</h4>
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-2">{p.title}</h4>
                     <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-bold uppercase">{p.date}</p>
                   </Link>
                 ))}

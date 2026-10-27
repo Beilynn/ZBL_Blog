@@ -122,7 +122,7 @@ export default function ClientTOC({ toc }: { toc: TocItem[] }) {
 
   return (
     <div className="bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl p-6 border border-white/40 dark:border-white/10 shadow-xl sticky top-28 transition-colors duration-700 max-h-[75vh] overflow-y-auto custom-scrollbar">
-      <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-indigo-500 pl-2 text-sm uppercase tracking-widest">
+      <h3 className="font-black text-slate-900 dark:text-white mb-4 border-l-4 border-orange-500 pl-2 text-sm uppercase tracking-widest">
         Table of Contents
       </h3>
       <nav className="flex flex-col gap-2 relative">
@@ -144,11 +144,11 @@ export default function ClientTOC({ toc }: { toc: TocItem[] }) {
                 ${item.level === 1 ? 'font-bold mt-2' : ''}
                 ${item.level === 2 ? 'ml-2' : ''}
                 ${item.level === 3 ? 'ml-4 text-xs' : ''}
-                ${isActive ? 'text-indigo-600 dark:text-indigo-400 font-bold scale-105 origin-left' : 'text-slate-500 hover:text-indigo-500 dark:text-slate-400 dark:hover:text-indigo-400'}
+                ${isActive ? 'text-orange-600 dark:text-orange-400 font-bold scale-105 origin-left' : 'text-slate-500 hover:text-orange-500 dark:text-slate-400 dark:hover:text-orange-400'}
               `}
             >
               {isActive && (
-                <span className="absolute left-[-5px] top-[50%] -translate-y-[50%] w-[6px] h-[6px] rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]"></span>
+                <span className="absolute left-[-5px] top-[50%] -translate-y-[50%] w-[6px] h-[6px] rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"></span>
               )}
               {displayText}
             </button>

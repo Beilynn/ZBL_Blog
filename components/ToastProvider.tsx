@@ -31,7 +31,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               ${toastMsg.type === 'success' ? 'bg-green-500/90 border-green-400 text-white' : ''}
               ${toastMsg.type === 'warning' ? 'bg-amber-500/90 border-amber-400 text-white' : ''}
               ${toastMsg.type === 'error' ? 'bg-red-500/90 border-red-400 text-white' : ''}
-              ${toastMsg.type === 'info' ? 'bg-indigo-500/90 border-indigo-400 text-white' : ''}
+              ${toastMsg.type === 'info' ? 'bg-orange-500/90 border-orange-400 text-white' : ''}
             `}
           >
             <span className="font-bold text-sm">{toastMsg.text}</span>

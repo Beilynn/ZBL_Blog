@@ -12,8 +12,12 @@ export default function LabComments({ pageId }: { pageId?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  const cfg = siteConfig.gitalkConfig;
+
   useEffect(() => {
     if (!containerRef.current) return;
+    // 未配置 GitHub OAuth 凭证时不初始化 Gitalk，避免 Network Error
+    if (!cfg.clientID || !cfg.repo) return;
 
     // 清空之前的评论区，防止切换月份时叠加
     containerRef.current.innerHTML = '';
@@ -43,9 +47,11 @@ export default function LabComments({ pageId }: { pageId?: string }) {
 
   }, [pathname, pageId]);
 
+  if (!cfg.clientID || !cfg.repo) return null;
+
   return (
     <div className="w-full mt-16 relative">
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-indigo-500/10 dark:bg-indigo-500/20 blur-3xl rounded-full pointer-events-none z-0"></div>
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-orange-500/10 dark:bg-orange-500/20 blur-3xl rounded-full pointer-events-none z-0"></div>
       <div ref={containerRef} className="relative z-10 custom-gitalk-glass pt-6 border-t border-slate-200/50 dark:border-slate-700/50" />
 
       {/* 🌟 保留你原来的毛玻璃样式 */}

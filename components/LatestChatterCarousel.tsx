@@ -48,7 +48,7 @@ export default function LatestChatterCarousel({ chatters }: { chatters: any[] })
 
       <div className="relative z-10 flex flex-col justify-center p-6 md:p-8 h-full pointer-events-none w-full md:w-[85%]">
         <div className="flex items-end gap-2 mb-2">
-          <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 shadow-sm">
+          <span className="text-[10px] font-black text-orange-400 uppercase tracking-widest bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 shadow-sm">
             Records
           </span>
           {currentChatter.formattedDate && (
@@ -58,7 +58,7 @@ export default function LatestChatterCarousel({ chatters }: { chatters: any[] })
           )}
         </div>
 
-        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors line-clamp-1 drop-shadow-md">
+        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-300 transition-colors line-clamp-1 drop-shadow-md">
           {currentChatter.title}
         </h3>
         <p className="text-sm text-slate-300 font-medium leading-relaxed drop-shadow-md line-clamp-2">
@@ -72,7 +72,7 @@ export default function LatestChatterCarousel({ chatters }: { chatters: any[] })
             <button
               key={i}
               onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-              className={`h-1.5 rounded-full transition-all duration-500 shadow-sm ${i === currentIndex ? 'w-6 bg-indigo-400' : 'w-2 bg-white/40 hover:bg-white/80'}`}
+              className={`h-1.5 rounded-full transition-all duration-500 shadow-sm ${i === currentIndex ? 'w-6 bg-orange-400' : 'w-2 bg-white/40 hover:bg-white/80'}`}
               aria-label={`跳转`}
             />
           ))}
