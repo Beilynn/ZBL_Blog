@@ -23,6 +23,25 @@ export default function CyberCat() {
     }, duration);
   };
 
+  // 统一聊天请求：30 秒超时，返回非空回复；失败由调用方 catch 兜底
+  const requestChat = async (message: string): Promise<string> => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 30000);
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+        signal: ctrl.signal,
+      });
+      if (!res.ok) throw new Error('API Error ' + res.status);
+      const data = await res.json();
+      return (data && data.reply && String(data.reply).trim()) || '本喵今天有点懒，先眯一会儿喵~';
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
   // --- 🖱️ 交互事件：摸猫猫 ---
   const handlePetCat = () => {
     if (isPetted) return;
@@ -40,19 +59,11 @@ export default function CyberCat() {
 
     setShowInput(false); // 喂食时关掉输入框
     setIsThinking(true);
-    speak("嗷呜！真好吃喵！本喵吃饱了要说两句...", 6000);
+    speak("嗷呜！真好吃喵！本喵吃饱了要说两句...", 60000);
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: "我刚刚喂了你一条美味的小鱼干！你有什么表示？" }),
-      });
-
-      if (!res.ok) throw new Error('API Error');
-
-      const data = await res.json();
-      speak(data.reply, 8000);
+      const reply = await requestChat("我刚刚喂了你一条美味的小鱼干！你有什么表示？");
+      speak(reply, 8000);
     } catch (error) {
       speak("吧唧吧唧... 鱼干好吃，但本喵卡壳了喵...", 4000);
     } finally {
@@ -69,19 +80,11 @@ export default function CyberCat() {
     setInputValue('');
     setShowInput(false);
     setIsThinking(true);
-    speak("让本喵想想喵...", 10000);
+    speak("让本喵想想喵...", 60000);
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
-      });
-
-      if (!res.ok) throw new Error('API Error');
-
-      const data = await res.json();
-      speak(data.reply, 8000);
+      const reply = await requestChat(userMessage);
+      speak(reply, 8000);
     } catch (error) {
       speak("铲屎官的网线被老鼠咬断了吧？喵！", 4000);
     } finally {

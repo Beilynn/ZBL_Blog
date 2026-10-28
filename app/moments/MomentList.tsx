@@ -28,7 +28,8 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
       const query = searchQuery.trim().toLowerCase();
       result = result.filter(m =>
         (m.content || '').toLowerCase().includes(query) ||
-        (m.location || '').toLowerCase().includes(query)
+        (m.location || '').toLowerCase().includes(query) ||
+        (m.tags || []).join(' ').toLowerCase().includes(query)
       );
     }
 
@@ -111,6 +112,16 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
       </div>
 
       <p className="text-slate-800 dark:text-slate-200 text-[14px] md:text-[16px] leading-relaxed whitespace-pre-wrap font-medium break-words">{moment.content}</p>
+
+      {moment.tags && moment.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-3 md:mt-4">
+          {moment.tags.map((tg: string, i: number) => (
+            <span key={i} className="inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-[10px] md:text-[11px] font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/10">
+              #{tg}
+            </span>
+          ))}
+        </div>
+      )}
 
       {renderImages(moment.images)}
 

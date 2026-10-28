@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "new": "node scripts/new-menu.js",
+    "new:article": "node scripts/new-article.js",
+    "new:featured": "node scripts/new-featured.js",
+    "new:project": "node scripts/new-project.js",
+    "editor": "node scripts/dev-editor.js",
+    "editor:server": "node scripts/editor-server.js",
+    "save": "node scripts/publish.js save",
+    "publish": "node scripts/publish.js publish"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

@@ -47,5 +47,8 @@ next-env.d.ts
 /posts_backup/
 /moments_backup/
 
+# 写作台草稿（仅本机，不进入时间线、不提交）
+/drafts/
+
 # 本地工具脚本产物（如需提交可移除下一行）
 generate-albums.ps1

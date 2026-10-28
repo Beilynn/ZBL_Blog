@@ -1,72 +1,59 @@
 // app/api/chat/route.ts
-import { siteConfig } from '../../../siteConfig'; // 确保这里的路径指向你的 siteConfig
+// 小猫「煤球」聊天服务端转发：密钥只从本机环境变量读取，不写进源码、不提交仓库、不下发到浏览器
+import { siteConfig } from '../../../siteConfig';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+
+// 接口地址与模型可用环境变量覆盖，默认走校内 DeepSeek 兼容网关
+const API_BASE = process.env.CHAT_API_BASE || 'https://token.nbu.edu.cn/v1/chat/completions';
+const MODEL = process.env.CHAT_MODEL || 'deepseek-v4-flash';
 
 export async function POST(req: Request) {
-  console.log("🚀 [1/5] 路由进入：开始对接 Gemini 3 脑回路");
-
   try {
     const { message } = await req.json();
 
-    // 🌟 纯粹靠环境变量读取 API Key
-    const apiKey = (process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY || '').trim();
-
+    const apiKey = (process.env.CHAT_API_KEY || process.env.DEEPSEEK_API_KEY || '').trim();
     if (!apiKey) {
-      console.error("❌ 找不到 API Key");
-      return new Response(JSON.stringify({ error: "Key missing" }), { status: 500 });
+      // 线上无本机密钥时直接返回错误，前端小猫会用兜底话术，不会暴露任何 key
+      return new Response(JSON.stringify({ error: 'Key missing' }), { status: 500 });
     }
 
-    // 调用 siteConfig 的参数
-    const modelId = siteConfig.geminiConfig.modelId;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
-
-    console.log(`📡 [2/5] 正在呼叫模型: ${modelId}`);
-
-    const response = await fetch(url, {
+    const response = await fetch(API_BASE, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({
-        system_instruction: {
-          parts: [{
-            text: siteConfig.geminiConfig.systemPrompt
-          }]
-        },
-        contents: [{
-          parts: [{ text: message }]
-        }],
-        generationConfig: {
-          maxOutputTokens: siteConfig.geminiConfig.maxOutputTokens,
-          temperature: siteConfig.geminiConfig.temperature,
-        }
-      })
+        model: MODEL,
+        messages: [
+          { role: 'system', content: siteConfig.geminiConfig.systemPrompt },
+          { role: 'user', content: String(message || '') },
+        ],
+        enable_thinking: false,
+        max_tokens: siteConfig.geminiConfig.maxOutputTokens,
+        temperature: siteConfig.geminiConfig.temperature,
+      }),
     });
 
-    const data = await response.json();
+    const data: any = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      console.error("🚨 Gemini 3 拒绝了请求:", JSON.stringify(data));
       return new Response(JSON.stringify({
         error: `模型拒绝访问: ${response.status}`,
-        details: data.error?.message || "未知错误"
+        details: data?.error?.message || data?.message || '未知错误',
       }), { status: response.status });
     }
 
-    console.log("✅ [3/5] Google 成功响应");
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "本喵现在不想理你喵...";
-
-    console.log("🎉 [4/5] 回复已生成，准备传回前端");
-
+    const reply = data?.choices?.[0]?.message?.content || '本喵现在不想理你喵...';
     return new Response(JSON.stringify({ reply }), {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
-
   } catch (error: any) {
-    console.error("🔥 [5/5] 运行时崩溃:", error.message);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: error?.message || '服务异常' }), { status: 500 });
   }
 }
 
 export async function GET() {
-  return new Response(JSON.stringify({ status: "Ready", model: "Gemini 3 Flash Preview" }), { status: 200 });
+  return new Response(JSON.stringify({ status: 'Ready', model: MODEL }), { status: 200 });
 }
