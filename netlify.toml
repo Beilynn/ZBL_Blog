@@ -2,5 +2,21 @@
   command = "npm run build"
   publish = ".next"
 
+# 跳过可选原生依赖（sharp 各平台二进制），本站 images.unoptimized，构建与运行均不需要
+[build.environment]
+  NPM_CONFIG_OMIT = "optional"
+  NPM_CONFIG_OPTIONAL = "false"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = [
+    "!.git/**",
+    "!public/**",
+    "!node_modules/typescript/**",
+    "!node_modules/caniuse-lite/**",
+    "!node_modules/sharp/**",
+    "!node_modules/@img/**",
+  ]

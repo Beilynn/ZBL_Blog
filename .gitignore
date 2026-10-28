@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# netlify（本地构建产物与函数包，体积大且无需入库，云端重新生成）
+/.netlify/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
