@@ -1,11 +1,8 @@
 [build]
-  command = "npm run build"
+  # 依赖安装完成后，仅剔除 sharp 原生图像包（本站 images.unoptimized、无 next/image，不做图片优化）；
+  # 必须保留 @next/swc、lightningcss 等其余构建期可选依赖，不能用全局 omit=optional。
+  command = "rm -rf node_modules/sharp node_modules/@img && npm run build"
   publish = ".next"
-
-# 跳过可选原生依赖（sharp 各平台二进制），本站 images.unoptimized，构建与运行均不需要
-[build.environment]
-  NPM_CONFIG_OMIT = "optional"
-  NPM_CONFIG_OPTIONAL = "false"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
