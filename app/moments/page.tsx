@@ -14,6 +14,33 @@ export const metadata = {
 export default function MomentsPage() {
   let allMoments: any[] = [];
 
+  // 单文件兜底解析：frontmatter 解析失败时剥离原文保留正文，date 用文件名前缀，不拖垮整页
+  const parseMomentFile = (fullPath: string, fileName: string) => {
+    const raw = fs.readFileSync(fullPath, 'utf8');
+    let data: any = {};
+    let content = raw;
+    try {
+      const parsed = matter(raw);
+      data = parsed.data || {};
+      content = parsed.content;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`[moments] ${fileName} frontmatter 解析失败，启用兜底:`, msg);
+      const block = raw.match(/^---[\s\S]*?---\s*\n?([\s\S]*)$/);
+      content = block ? block[1] : raw;
+      const dm = fileName.match(/^(\d{4}-\d{2}-\d{2})/);
+      data = { date: dm ? dm[1] : '', tags: [], images: [] };
+    }
+    return {
+      id: fileName.replace(/\.md$/, ''),
+      date: data.date || '',
+      location: data.location || '',
+      images: Array.isArray(data.images) ? data.images : [],
+      tags: Array.isArray(data.tags) ? data.tags : [],
+      content: (content || '').trim(),
+    };
+  };
+
   try {
     // 🌟 终极防漏绝招：同时扫描两个可能的文件夹，把所有的说说都抓出来！
     const possibleDirs = [
@@ -25,17 +52,12 @@ export default function MomentsPage() {
       if (fs.existsSync(dir)) {
         const fileNames = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
         fileNames.forEach(fileName => {
-          const fullPath = path.join(dir, fileName);
-          const { data, content } = matter(fs.readFileSync(fullPath, 'utf8'));
-
-          allMoments.push({
-            id: fileName.replace(/\.md$/, ''),
-            date: data.date || '1970-01-01',
-            location: data.location || '',
-            images: data.images || [],
-            tags: data.tags || [],
-            content: content.trim()
-          });
+          try {
+            allMoments.push(parseMomentFile(path.join(dir, fileName), fileName));
+          } catch (fileErr) {
+            const msg = fileErr instanceof Error ? fileErr.message : String(fileErr);
+            console.warn(`[moments] 跳过损坏文件 ${fileName}:`, msg);
+          }
         });
       }
     });

@@ -33,7 +33,7 @@ function getDirActivities(dirName: string, typeLabel: '文章' | '杂谈' | '说
       id: `${dirName}-${file}`,
       type: typeLabel,
       title: data.title || file.replace('.md', ''),
-      date: data.date ? new Date(data.date).toISOString() : '1970-01-01T00:00:00Z',
+      date: data.date ? new Date(data.date).toISOString() : '',
       url: `/${linkPrefix}/${file.replace('.md', '')}`
     };
   });
@@ -95,9 +95,11 @@ export default async function AboutPage() {
   const chatters = getDirActivities('chatters', '杂谈', 'chatter');
   const moments = getDirActivities('moments', '说说', 'moments');
 
-  const allActivities = [...posts, ...chatters, ...moments].sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+  const activityTs = (item: any) => {
+    const t = new Date(item.date).getTime();
+    return isNaN(t) ? 0 : t;
+  };
+  const allActivities = [...posts, ...chatters, ...moments].sort((a, b) => activityTs(b) - activityTs(a));
 
   return (
     <div className="min-h-screen relative pb-20">

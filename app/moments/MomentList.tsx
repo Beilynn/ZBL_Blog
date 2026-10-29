@@ -2,11 +2,23 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { MapPin, MessageSquare, Clock, Sparkles, Search, ArrowDownAZ, ArrowUpZA, ChevronLeft, ChevronRight, Ghost } from 'lucide-react';
-import MomentComments from '../../components/MomentComments';
+import { MapPin, Sparkles, Search, ArrowDownAZ, ArrowUpZA, ChevronLeft, ChevronRight, Ghost } from 'lucide-react';
 
+// 安全格式化日期：非法日期返回空串，绝不渲染成 1970
+function parseDate(dateStr: string) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  return isNaN(d.getTime()) ? null : d;
+}
+function formatDate(dateStr: string) {
+  const d = parseDate(dateStr);
+  if (!d) return '';
+  const p = (x: number) => String(x).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
 function timeAgo(dateStr: string) {
-  const date = new Date(dateStr);
+  const date = parseDate(dateStr);
+  if (!date) return '';
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
   if (diffInSeconds < 60) return '刚刚';
@@ -16,13 +28,30 @@ function timeAgo(dateStr: string) {
 }
 
 export default function MomentList({ moments, authorName, avatarUrl }: any) {
-  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
+  const [activeMonth, setActiveMonth] = useState<string>('all');
   const [lightbox, setLightbox] = useState<{ images: string[], index: number } | null>(null);
+
+  // 提取出现过的月份（YYYY-MM），倒序，供月份筛选胶囊使用
+  const monthOptions = useMemo(() => {
+    const set = new Set<string>();
+    (moments || []).forEach((m: any) => {
+      const d = parseDate(m.date);
+      if (d) set.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+    });
+    return [...set].sort().reverse();
+  }, [moments]);
 
   const processedMoments = useMemo(() => {
     let result = moments ? [...moments] : [];
+
+    if (activeMonth !== 'all') {
+      result = result.filter(m => {
+        const d = parseDate(m.date);
+        return d && `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` === activeMonth;
+      });
+    }
 
     if (searchQuery.trim()) {
       const query = searchQuery.trim().toLowerCase();
@@ -34,12 +63,12 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
     }
 
     result.sort((a, b) => {
-      const timeA = new Date(a.date).getTime();
-      const timeB = new Date(b.date).getTime();
+      const timeA = new Date(a.date).getTime() || 0;
+      const timeB = new Date(b.date).getTime() || 0;
       return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
     });
     return result;
-  }, [moments, searchQuery, sortOrder]);
+  }, [moments, searchQuery, sortOrder, activeMonth]);
 
   const nextImg = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -95,103 +124,113 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
     <motion.div
       key={moment.id}
       layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.4, type: 'spring', stiffness: 100 }}
-      className="flex flex-col bg-white/60 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl md:rounded-[40px] shadow-lg md:shadow-xl border border-white/40 dark:border-white/10 p-5 md:p-10 transition-shadow hover:shadow-2xl overflow-hidden relative group w-full"
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.35, type: 'spring', stiffness: 110 }}
+      className="relative w-full md:w-[75%] md:ml-[74px] flex flex-col justify-center bg-[#fffaf2]/85 dark:bg-slate-800/50 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-md hover:shadow-lg border border-[#e8d5c4]/70 px-3.5 py-3.5 md:px-5 md:py-4"
     >
-      <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8 pb-4 md:pb-6 border-b border-slate-200/50 dark:border-slate-700/50 relative">
-        <div className="w-10 h-10 md:w-14 md:h-14 shrink-0 rounded-xl md:rounded-2xl overflow-hidden shadow-sm md:shadow-md border-2 border-white dark:border-slate-700">
-          <img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
-        </div>
-        <div className="flex flex-col">
-          <h3 className="text-base md:text-lg font-black text-[#576b95] dark:text-[#7f99cc] tracking-wide">{authorName}</h3>
-          <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-[11px] text-slate-400 font-bold mt-0.5 md:mt-1"><Clock size={10} className="md:w-3 md:h-3" /> {timeAgo(moment.date)}</div>
-        </div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+        {formatDate(moment.date) && (
+          <span
+            title={timeAgo(moment.date)}
+            className="text-sm md:text-[15px] font-black text-orange-600 tracking-wide"
+          >
+            {formatDate(moment.date)}
+          </span>
+        )}
+        {moment.tags && moment.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {moment.tags.map((tg: string, i: number) => (
+              <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] md:text-[11px] font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/15">
+                #{tg}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      <p className="text-slate-800 dark:text-slate-200 text-[14px] md:text-[16px] leading-relaxed whitespace-pre-wrap font-medium break-words">{moment.content}</p>
-
-      {moment.tags && moment.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-3 md:mt-4">
-          {moment.tags.map((tg: string, i: number) => (
-            <span key={i} className="inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-[10px] md:text-[11px] font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/10">
-              #{tg}
-            </span>
-          ))}
-        </div>
-      )}
+      <p className="text-slate-800 dark:text-slate-200 text-[14px] md:text-[15px] leading-normal whitespace-pre-wrap font-medium break-words">{moment.content}</p>
 
       {renderImages(moment.images)}
 
-      <div className="mt-5 md:mt-10 flex items-center justify-between">
-        <div className="min-w-0 flex-1 pr-2">
-          {moment.location && (
-            <span className="inline-flex items-center gap-1 md:gap-1.5 text-[9px] md:text-[11px] font-bold px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 max-w-full truncate border border-orange-500/10">
-              {/* 🌟 就是这里！shrink-0 已经乖乖放进 className 里面了 */}
-              <MapPin size={10} className="md:w-3 md:h-3 shrink-0" />
-              <span className="truncate">{moment.location}</span>
-            </span>
-          )}
+      {moment.location && (
+        <div className="mt-1">
+          <span className="inline-flex items-center gap-1 text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 max-w-full truncate border border-orange-500/10">
+            <MapPin size={10} className="shrink-0" />
+            <span className="truncate">{moment.location}</span>
+          </span>
         </div>
-        <button onClick={() => setOpenCommentId(openCommentId === moment.id ? null : moment.id)} className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center shrink-0 rounded-full transition-all shadow-sm ${openCommentId === moment.id ? 'bg-orange-500 text-white shadow-orange-500/30 rotate-12' : 'bg-white/80 dark:bg-slate-800 text-slate-400 hover:text-orange-500 hover:bg-slate-100 dark:hover:bg-slate-700'}`}>
-          <MessageSquare size={14} className="md:w-4 md:h-4" />
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {openCommentId === moment.id && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1, marginTop: 16 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            <div className="bg-slate-50/50 dark:bg-slate-900/50 rounded-2xl md:rounded-3xl p-4 md:p-6 border border-slate-200/50 dark:border-slate-700/50 relative shadow-inner">
-              <div className="absolute -top-2 right-6 md:right-8 w-4 h-4 bg-slate-50/50 dark:bg-slate-900/50 rotate-45 border-l border-t border-slate-200/50"></div>
-              <MomentComments id={`/moments/${moment.id}`} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      )}
     </motion.div>
   );
 
   return (
-    <div className="w-[95%] md:w-[90%] max-w-6xl mx-auto py-6 md:py-10 mt-24 md:mt-28 relative z-10 flex-1 flex flex-col min-h-[85vh]">
+    <div className="w-[95%] md:w-[90%] max-w-6xl mx-auto md:px-[30px] py-4 md:py-6 mt-14 md:mt-16 relative z-10 flex-1 flex flex-col min-h-[85vh]">
 
-      <div className="mb-8 md:mb-14 text-center relative">
+      <div className="mb-5 md:mb-8 text-center relative">
         <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-2 md:mb-4 tracking-tighter">生活动态</motion.h1>
         <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 font-medium italic opacity-80 flex items-center justify-center gap-1.5 md:gap-2">
           <Sparkles size={12} className="md:w-3.5 md:h-3.5 text-orange-500" /> “ 在代码之外捕捉瞬间的温度 ”
         </p>
       </div>
 
-      <div className="mb-10 md:mb-16 flex flex-col items-center gap-5 md:gap-8">
+      <div className="mb-5 md:mb-8 flex flex-col items-center gap-4 md:gap-5">
         <div className="relative w-full max-w-lg group px-2 md:px-0">
           <Search className="w-5 h-5 md:w-6 md:h-6 absolute left-6 md:left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors z-20 pointer-events-none" />
           <input type="text" placeholder="搜寻被遗忘的记忆..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-[#fdf6ec]/80 backdrop-blur-xl border border-[#e8d5c4]/50 rounded-full px-5 md:px-6 py-3 md:py-4 pl-12 md:pl-14 text-sm md:text-base text-slate-800 shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-400/50 transition-all font-medium relative z-10" />
         </div>
 
-        <div className="flex bg-[#f5ebe0] p-1 md:p-1.5 rounded-xl md:rounded-2xl border border-[#e8d5c4]/50 shadow-sm relative z-10">
-          <button onClick={() => setSortOrder('desc')} className={`flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all duration-300 ${sortOrder === 'desc' ? 'bg-orange-500 text-white shadow-md md:shadow-lg scale-105' : 'text-slate-500 hover:text-orange-500'}`}>
-            <ArrowDownAZ size={12} className="md:w-3.5 md:h-3.5"/> 最新
-          </button>
-          <button onClick={() => setSortOrder('asc')} className={`flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black transition-all duration-300 ${sortOrder === 'asc' ? 'bg-orange-500 text-white shadow-md md:shadow-lg scale-105' : 'text-slate-500 hover:text-orange-500'}`}>
-            <ArrowUpZA size={12} className="md:w-3.5 md:h-3.5"/> 最早
-          </button>
+        <div className="w-full max-w-lg md:max-w-none flex items-center justify-between gap-3 md:gap-6 flex-wrap">
+          {monthOptions.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 md:gap-2.5">
+              <button
+                onClick={() => setActiveMonth('all')}
+                className={`px-3.5 py-1.5 md:px-5 md:py-2.5 rounded-full text-[11px] md:text-sm font-bold transition-all ${activeMonth === 'all' ? 'bg-orange-500 text-white shadow-md' : 'bg-[#fdf6ec]/80 text-slate-500 border border-[#e8d5c4]/60 hover:text-orange-600'}`}
+              >
+                全部
+              </button>
+              {monthOptions.map(m => {
+                const label = `${m.slice(2).replace('-', '年')}月`;
+                const active = activeMonth === m;
+                return (
+                  <button
+                    key={m}
+                    onClick={() => setActiveMonth(active ? 'all' : m)}
+                    className={`px-3.5 py-1.5 md:px-5 md:py-2.5 rounded-full text-[11px] md:text-sm font-bold transition-all ${active ? 'bg-orange-500 text-white shadow-md' : 'bg-[#fdf6ec]/80 text-slate-500 border border-[#e8d5c4]/60 hover:text-orange-600'}`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="flex bg-[#f5ebe0] p-0.5 md:p-1 rounded-lg md:rounded-xl border border-[#e8d5c4]/50 shadow-sm relative z-10">
+            <button onClick={() => setSortOrder('desc')} className={`flex items-center gap-1 md:gap-1.5 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-md md:rounded-lg text-[9px] md:text-[11px] font-black transition-all duration-300 ${sortOrder === 'desc' ? 'bg-orange-500 text-white shadow-md md:shadow-lg scale-105' : 'text-slate-500 hover:text-orange-500'}`}>
+              <ArrowDownAZ size={11} className="md:w-3 md:h-3"/> 最新
+            </button>
+            <button onClick={() => setSortOrder('asc')} className={`flex items-center gap-1 md:gap-1.5 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-md md:rounded-lg text-[9px] md:text-[11px] font-black transition-all duration-300 ${sortOrder === 'asc' ? 'bg-orange-500 text-white shadow-md md:shadow-lg scale-105' : 'text-slate-500 hover:text-orange-500'}`}>
+              <ArrowUpZA size={11} className="md:w-3 md:h-3"/> 最早
+            </button>
+          </div>
         </div>
       </div>
 
       <LayoutGroup>
         {processedMoments.length > 0 ? (
-          <div className="flex flex-col md:flex-row gap-5 md:gap-8 pb-32 w-full items-start">
-            <div className="flex-1 flex flex-col gap-5 md:gap-8 w-full min-w-0">
-              <AnimatePresence mode='popLayout'>
-                {processedMoments.filter((_, i) => i % 2 === 0).map(moment => renderMomentCard(moment))}
-              </AnimatePresence>
-            </div>
-            <div className="flex-1 flex flex-col gap-5 md:gap-8 w-full min-w-0">
-              <AnimatePresence mode='popLayout'>
-                {processedMoments.filter((_, i) => i % 2 === 1).map(moment => renderMomentCard(moment))}
-              </AnimatePresence>
-            </div>
+          <div className="flex flex-col gap-2.5 md:gap-4 pb-32 w-full">
+            <AnimatePresence mode='popLayout'>
+              {processedMoments.map((moment, idx) => (
+                <div key={moment.id} className="relative pl-5 md:pl-0">
+                  {idx < processedMoments.length - 1 && (
+                    <span className="absolute left-[10px] md:left-[54px] top-6 bottom-[-6px] w-px -translate-x-1/2 bg-[#e8d5c4]/80" />
+                  )}
+                  <span className="absolute left-[10px] md:left-[54px] top-3 md:top-3 w-2.5 h-2.5 md:w-3 md:h-3 -translate-x-1/2 rounded-full bg-orange-500 border-2 border-[#f5ebe0] shadow-sm ring-1 ring-orange-300/40" />
+                  {renderMomentCard(moment)}
+                </div>
+              ))}
+            </AnimatePresence>
           </div>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center py-12 md:py-24 min-h-[300px] md:min-h-[450px]">

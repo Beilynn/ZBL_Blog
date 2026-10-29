@@ -58,30 +58,33 @@ function readBody(req) {
 }
 
 // 生活说说 frontmatter：对齐 app/moments/page.tsx 读取契约（date/location/images + 纯文本正文）
+// 注意：YAML 空数组必须与 key 同行写成 `images: []`；序列项统一缩进两空格，避免顶格 [] 触发解析异常
 function buildMomentFrontmatter(d) {
   const images = Array.isArray(d.images)
     ? d.images.map((u) => String(u).trim()).filter(Boolean)
     : [];
-  const imageBlock = images.length
-    ? images.map((u) => `- ${u}`).join('\n')
-    : '[]';
   const tags = Array.isArray(d.tags)
     ? d.tags.map((t) => String(t).trim()).filter(Boolean)
     : [];
-  const tagBlock = tags.length
-    ? tags.map((t) => `- ${t}`).join('\n')
-    : '[]';
-  return [
+  const lines = [
     '---',
     `date: ${yq(d.date)}`,
     `location: ${yq(d.location || '')}`,
-    'images:',
-    imageBlock,
-    'tags:',
-    tagBlock,
-    '---',
-    '',
-  ].join('\n');
+  ];
+  if (images.length) {
+    lines.push('images:');
+    images.forEach((u) => lines.push(`  - ${yq(u)}`));
+  } else {
+    lines.push('images: []');
+  }
+  if (tags.length) {
+    lines.push('tags:');
+    tags.forEach((t) => lines.push(`  - ${yq(t)}`));
+  } else {
+    lines.push('tags: []');
+  }
+  lines.push('---', '');
+  return lines.join('\n');
 }
 
 // 说说直接写入 moments/（无草稿、无 slug、无详情页），文件名按时间避免冲突
